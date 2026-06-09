@@ -1,6 +1,7 @@
 <!-- navbar  -->
 ![alt text](image.png)
-
+<!-- banner  -->
+![alt text](image-2.png)
 
 
 
