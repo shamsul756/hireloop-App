@@ -1,95 +1,147 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import {
-  Button,
-  Description,
-  FieldError,
-  Form,
-  Input,
-  Label,
-  TextField,
+    Button,
+    Card,
+
+    Form,
+    Input,
+    TextField,
+    Label,
+    FieldError,
+    Description,
 } from "@heroui/react";
-
-import { Check, Mail, Lock, User, ImageIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-const SignUp = () => {
-  const onSubmit = async (e) => {
-    e.preventDefault();
+const SignUpPage = () => {
+    const router = useRouter();
 
-    const formData = new FormData(e.currentTarget);
-    const user = Object.fromEntries(formData.entries());
+    const onSubmit = async (e) => {
+        e.preventDefault();
 
-    console.log(user);
+        const formData = new FormData(e.currentTarget);
+        const user = Object.fromEntries(formData.entries());
 
-   
-    const { data, error } = await authClient.signUp.email({
-      email: user.email,
-      password: user.password,
-      name: user.name,
-      image: user.photoURL,
-    });
-  };
+        const { data, error } = await authClient.signUp.email({
+            email: user.email,
+            password: user.password,
+            name: user.name,
+            image: user.image,
+        });
 
-  return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-cyan-900/50 to-black p-4 antialiased">
-      {/* Decorative Background */}
-      <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-blue-400/20 blur-3xl" />
-      <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-indigo-400/20 blur-3xl" />
+        if (data) {
+            router.push("/signin");
+        }
 
-      {/* Card */}
-      <div className="relative w-full max-w-md rounded-3xl border border-white/60 bg-white/70 p-8 shadow-xl backdrop-blur-xl">
+        if (error) {
+            console.log(error);
+        }
+    };
 
-        {/* Header */}
-        <div className="mb-8 text-center">
-          <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-700">
-            Create Account
-          </h2>
-          <p className="mt-2 text-sm text-gray-500">
-            Join us and start your journey today
-          </p>
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-blue-100 flex items-center justify-center px-4">
+            <Card className="w-full max-w-md shadow-2xl border border-gray-200">
+
+                <div className="text-center mb-8">
+                    <h1 className="text-3xl font-bold text-gray-100">
+                        Create Account
+                    </h1>
+                    <p className="text-gray-300 mt-2">
+                        Join us and start your journey today
+                    </p>
+                </div>
+
+                <Form
+                    onSubmit={onSubmit}
+                    className="flex flex-col gap-5"
+                >
+                    <TextField
+                        isRequired
+                        name="name"
+                        type="text"
+                    >
+                        <Label>Full Name</Label>
+                        <Input placeholder="John Doe" />
+                        <FieldError />
+                    </TextField>
+
+                    <TextField
+                        isRequired
+                        name="image"
+                        type="url"
+                    >
+                        <Label>Profile Image URL</Label>
+                        <Input placeholder="https://example.com/avatar.jpg" />
+                        <FieldError />
+                    </TextField>
+
+                    <TextField
+                        isRequired
+                        name="email"
+                        type="email"
+                        validate={(value) => {
+                            if (
+                                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)
+                            ) {
+                                return "Please enter a valid email address";
+                            }
+                            return null;
+                        }}
+                    >
+                        <Label>Email Address</Label>
+                        <Input placeholder="john@example.com" />
+                        <FieldError />
+                    </TextField>
+
+                    <TextField
+                        isRequired
+                        minLength={8}
+                        name="password"
+                        type="password"
+                        validate={(value) => {
+                            if (value.length < 8) {
+                                return "Password must be at least 8 characters";
+                            }
+                            if (!/[A-Z]/.test(value)) {
+                                return "Password must contain at least one uppercase letter";
+                            }
+                            if (!/[0-9]/.test(value)) {
+                                return "Password must contain at least one number";
+                            }
+                            return null;
+                        }}
+                    >
+                        <Label>Password</Label>
+                        <Input placeholder="Enter your password" />
+                        <Description>
+                            Minimum 8 characters, 1 uppercase letter, and 1 number.
+                        </Description>
+                        <FieldError />
+                    </TextField>
+                    <Link href={"/signin"}>
+                        <Button
+                            type="submit"
+                            color="primary"
+                            className="w-full h-12 font-semibold text-base"
+                        >
+                            Create Account
+                        </Button></Link>
+
+                    <Link href={"/signin"}>
+                        <p className="text-center text-sm text-gray-500">
+                            Already have an account?
+                            <span className="text-primary font-medium cursor-pointer ml-1 hover:underline text-blue-300">
+                                Sign In
+                            </span>
+                        </p></Link>
+
+                </Form>
+
+            </Card>
         </div>
-
-        {/* Form */}
-        <Form className="flex flex-col gap-5" onSubmit={onSubmit}>
-          
-          <TextField isRequired name="name">
-            <Label>Name</Label>
-            <Input startContent={<User size={18} />} placeholder="John Doe" />
-          </TextField>
-
-          <TextField isRequired name="email" type="email">
-            <Label>Email</Label>
-            <Input startContent={<Mail size={18} />} placeholder="john@example.com" />
-          </TextField>
-
-          <TextField isRequired name="photoURL" type="url">
-            <Label>Profile Image</Label>
-            <Input startContent={<ImageIcon size={18} />} placeholder="https://..." />
-          </TextField>
-
-          <TextField isRequired minLength={8} name="password" type="password">
-            <Label>Password</Label>
-            <Input startContent={<Lock size={18} />} placeholder="Enter password" />
-            <Description>Must be 8+ characters</Description>
-          </TextField>
-
-          <Button type="submit" className="w-full">
-            <Check size={18} />
-            Create Account
-          </Button>
-        </Form>
-
-        {/* Footer */}
-        <p className="mt-6 text-center text-sm text-gray-500">
-          Already have an account?{" "}
-          <Link href="/login" className="text-blue-600 hover:underline">
-            Sign In
-          </Link>
-        </p>
-      </div>
-    </div>
-  );
+    );
 };
 
-export default SignUp;
+export default SignUpPage;

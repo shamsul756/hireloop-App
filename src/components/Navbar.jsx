@@ -3,18 +3,25 @@
 import { useState } from "react";
 import { Link, Button } from "@heroui/react";
 import Image from "next/image";
+import { useSession, signOut } from "@/lib/auth-client";
+
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session, isPending } = useSession();
 
+  const user = session?.user;
+  const handleSignOut = async () => {
+    await signOut();
+  }
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#111827]">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* Left - Logo */}
-      <div className="flex items-center">
-<Image src={"/images/logo.png"} alt="hire-loop logo" width={150} height={150}/>
-  
-</div>
+        <div className="flex items-center">
+          <Image src={"/images/logo.png"} alt="hire-loop logo" width={150} height={150} />
+
+        </div>
 
         {/* Center - Desktop Menu */}
         <ul className="hidden items-center gap-10 text-sm text-gray-300 md:flex">
@@ -47,13 +54,19 @@ export default function Navbar() {
         {/* Right - Actions */}
         <div className="hidden items-center gap-4 md:flex">
           <div className="h-6 w-px bg-gray-700" />
+          {user ? <>
+            hi, {user.name}
+            <Button variant="ghost" onClick={handleSignOut}>sign out</Button>
+          </>
+            :
+            <Link
+              href="signup"
+              className="text-sm text-gray-300 hover:text-white"
+            >
+              Sign In
+            </Link>
+          }
 
-          <Link
-            href="signup"
-            className="text-sm text-gray-300 hover:text-white"
-          >
-            Sign In
-          </Link>
 
           <Button
             className="rounded-xl bg-violet-600 px-6 text-white hover:bg-violet-700"

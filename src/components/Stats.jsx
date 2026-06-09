@@ -1,7 +1,10 @@
+
+
 import Image from "next/image";
 
 
 export default function Stats() {
+
   return (
    <section className="relative w-full h-[600px] overflow-hidden">
 
