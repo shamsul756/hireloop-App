@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Link, Button } from "@heroui/react";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,14 +12,8 @@ export default function Navbar() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* Left - Logo */}
       <div className="flex items-center">
-  <h2 className="text-2xl font-extrabold tracking-tight">
-    <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">
-      Hire
-    </span>
-    <span className="bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">
-      Loop
-    </span>
-  </h2>
+<Image src={"/images/logo.png"} alt="hire-loop logo" width={150} height={150}/>
+  
 </div>
 
         {/* Center - Desktop Menu */}
