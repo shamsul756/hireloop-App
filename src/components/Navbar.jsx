@@ -49,7 +49,7 @@ export default function Navbar() {
           <div className="h-6 w-px bg-gray-700" />
 
           <Link
-            href="#"
+            href="signup"
             className="text-sm text-gray-300 hover:text-white"
           >
             Sign In
