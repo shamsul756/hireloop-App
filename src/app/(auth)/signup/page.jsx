@@ -1,5 +1,5 @@
 "use client";
-
+import { Radio, RadioGroup} from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
 import {
     Button,
@@ -29,6 +29,7 @@ const SignUpPage = () => {
             password: user.password,
             name: user.name,
             image: user.image,
+            role: user.role,
         });
 
         if (data) {
@@ -120,6 +121,31 @@ const SignUpPage = () => {
                         </Description>
                         <FieldError />
                     </TextField>
+                    {/* role based section */}
+                    <div className="flex flex-col gap-4">
+      <Label>whats your role</Label>
+      <RadioGroup defaultValue="seeker" name="role" orientation="horizontal">
+        <Radio value="seeker">
+          <Radio.Control>
+            <Radio.Indicator />
+          </Radio.Control>
+          <Radio.Content>
+            <Label>job seeker</Label>
+         
+          </Radio.Content>
+        </Radio>
+        <Radio value="recruiter">
+          <Radio.Control>
+            <Radio.Indicator />
+          </Radio.Control>
+          <Radio.Content>
+            <Label>job recruiter</Label>
+           
+          </Radio.Content>
+        </Radio>
+      
+      </RadioGroup>
+    </div>
                     <Link href={"/signin"}>
                         <Button
                             type="submit"

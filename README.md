@@ -19,6 +19,15 @@
 ![alt text](image-7.png)
 <!-- login -->
 ![alt text](image-8.png)
+<!-- 
+dashboard -->
+![alt text](image-9.png)
+
+<!-- registration form  -->
+![alt text](image-10.png)
+
+
+
 
 <!-- footer  -->
 ![alt text](image-1.png)
